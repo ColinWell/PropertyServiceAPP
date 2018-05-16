@@ -16,12 +16,16 @@
  *
  */
 
-package com.antonioleiva.mvpexample.app.Login;
+package com.antonioleiva.mvpexample.app.login;
 
 public interface LoginView {
     void showProgress();
 
     void hideProgress();
+
+    void setUserName(String userName);
+
+    void setPassword(String password);
 
     void setUsernameError();
 
@@ -30,4 +34,8 @@ public interface LoginView {
     void setUsernameOrPasswordError();
 
     void navigateToHome();
+
+    void navigateToForgotPassword();
+
+    void navigateToSign();
 }

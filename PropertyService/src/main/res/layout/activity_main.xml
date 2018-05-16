@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.antonioleiva.mvpexample.app.Main.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.antonioleiva.mvpexample.app.main.MainActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/toolbar_theme"
+        app:popupTheme="@style/popup_theme"
+        app:title="主页"
+        android:elevation="4dp"
+        app:contentInsetStart="16dp"
+        app:contentInsetStartWithNavigation="16dp"/>
+
+
+
+    <FrameLayout
+        android:id="@+id/mFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:id="@+id/bottom_navigation_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/bottom_navigation_padded_height"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp" />
+
+</LinearLayout>

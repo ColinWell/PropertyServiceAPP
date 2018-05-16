@@ -1,4 +1,4 @@
-package com.antonioleiva.mvpexample.app.Bean;
+package com.antonioleiva.mvpexample.app.bean;
 
 /**
  * Created by Colin on 2018/3/14.

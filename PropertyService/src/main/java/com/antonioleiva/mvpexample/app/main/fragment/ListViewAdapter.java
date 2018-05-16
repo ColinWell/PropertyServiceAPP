@@ -1,4 +1,4 @@
-package com.antonioleiva.mvpexample.app.Main.fragment;
+package com.antonioleiva.mvpexample.app.main.fragment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.antonioleiva.mvpexample.app.Bean.ListMenuItem;
+import com.antonioleiva.mvpexample.app.bean.ListMenuItem;
 import com.antonioleiva.mvpexample.app.R;
 
 import java.util.List;

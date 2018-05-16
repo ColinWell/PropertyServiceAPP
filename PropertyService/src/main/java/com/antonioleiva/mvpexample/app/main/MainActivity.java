@@ -1,37 +1,54 @@
-package com.antonioleiva.mvpexample.app.Main;
+package com.antonioleiva.mvpexample.app.main;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
+//import android.support.v4.app.Fragment;
+//import android.support.v4.app.FragmentManager;
+//import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.antonioleiva.mvpexample.app.Main.fragment.payment.PropertyFeeFragment;
-import com.antonioleiva.mvpexample.app.Main.fragment.payment.PropertyRuleFragment;
 import com.antonioleiva.mvpexample.app.R;
-import com.antonioleiva.mvpexample.app.Utils.OnMenuListItemClick;
+import com.antonioleiva.mvpexample.app.personalInfo.NoticeListActivity;
+import com.antonioleiva.mvpexample.app.util.OnMenuListItemClick;
 import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.antonioleiva.mvpexample.app.Main.fragment.*;
+import com.antonioleiva.mvpexample.app.main.fragment.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener, Toolbar.OnMenuItemClickListener {
 
     private BottomNavigationBar bottomNavigationBar;
     private BadgeItem badgeItem; //添加角标
     private List<Fragment> mList; //ViewPager的数据源
-
+    private Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-     //   getSupportActionBar().hide(); //标题栏不显示
+        //getSupportActionBar().hide(); //标题栏不显示
+        //像获取普通控件那样获取Toolbar
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //以下四个方法分别用来设置导航按钮、Logo、主标题和副标题
+        //如果xml文件中没有设置这些属性或者想覆盖xml文件中设置的值可调用这些方法
+//        mToolbar.setNavigationIcon(R.drawable.nav_icon);
+//        mToolbar.setLogo(R.drawable.logo_icon);
+//        mToolbar.setTitle("主标题");
+//        mToolbar.setSubtitle("副标题");
+
+        setSupportActionBar(mToolbar);
+        mToolbar.setOnMenuItemClickListener(this);
         initBottomNavigationBar();
         initFragments();
         //设置默认的Item
@@ -40,6 +57,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         bottomNavigationBar.setTabSelectedListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("onActivityResult request:"+requestCode+", resultCode:" + resultCode + "\n");
+        onTabSelected(resultCode);
+    }
     //初始化ViewPager
     private void initFragments() {
         // 实例化fragment放入数组
@@ -52,38 +81,38 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             //    System.out.println("点击"+row);
                 if(row == 0){
 
-                    final PropertyFeeFragment propertyFeeFragment = PropertyFeeFragment.newInstance();
-                    propertyFeeFragment.setOnMenuListItemClick(new OnMenuListItemClick() {
-                        @Override
-                        public void onClick(View view, int row) {
-                            if(row == 1){
-                                PropertyRuleFragment propertyRuleFragment = PropertyRuleFragment.newInstance();
-                                FragmentManager fm = getSupportFragmentManager();
-                                FragmentTransaction ft = fm.beginTransaction();
-                                ft.hide(propertyFeeFragment);
-                                ft.addToBackStack(null);
-                                if(propertyRuleFragment.isAdded()){
-                                    ft.show(propertyRuleFragment);
-                                }
-                                else{
-                                    ft.add(R.id.mFrame,propertyRuleFragment);
-                                }
-                                ft.commitAllowingStateLoss();
-                            }
-                        }
-                    });
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                            //替换为TwoFragment
-                    ft.hide(mList.get(1));
-                    ft.addToBackStack(null);
-                    if(propertyFeeFragment.isAdded()) {
-                        ft.show(propertyFeeFragment);
-                    }
-                    else{
-                        ft.add(R.id.mFrame,propertyFeeFragment);
-                    }
-                    ft.commitAllowingStateLoss();
+//                    final PropertyFeeFragment propertyFeeFragment = PropertyFeeFragment.newInstance();
+//                    propertyFeeFragment.setOnMenuListItemClick(new OnMenuListItemClick() {
+//                        @Override
+//                        public void onClick(View view, int row) {
+//                            if(row == 1){
+//                                PropertyRuleFragment propertyRuleFragment = PropertyRuleFragment.newInstance();
+//                                FragmentManager fm = getSupportFragmentManager();
+//                                FragmentTransaction ft = fm.beginTransaction();
+//                                ft.hide(propertyFeeFragment);
+//                                ft.addToBackStack(null);
+//                                if(propertyRuleFragment.isAdded()){
+//                                    ft.show(propertyRuleFragment);
+//                                }
+//                                else{
+//                                    ft.add(R.id.mFrame,propertyRuleFragment);
+//                                }
+//                                ft.commitAllowingStateLoss();
+//                            }
+//                        }
+//                    });
+//                    FragmentManager fm = getSupportFragmentManager();
+//                    FragmentTransaction ft = fm.beginTransaction();
+//                            //替换为TwoFragment
+//                    ft.hide(mList.get(1));
+//                    ft.addToBackStack(null);
+//                    if(propertyFeeFragment.isAdded()) {
+//                        ft.show(propertyFeeFragment);
+//                    }
+//                    else{
+//                        ft.add(R.id.mFrame,propertyFeeFragment);
+//                    }
+//                    ft.commitAllowingStateLoss();
                 }
                 if(row == 1){
 
@@ -101,11 +130,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             }
         });
         mList.add(new ExtendFragment());
-
-//        viewPager = (ViewPager) findViewById(R.id.viewPager);
-//        viewPager.setOnPageChangeListener(this);
-//        MainAdapter mainAdapter = new MainAdapter(getSupportFragmentManager(), mList);
-//        viewPager.setAdapter(mainAdapter); //视图加载适配器
     }
 
 
@@ -115,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         bottomNavigationBar.setTabSelectedListener(this);
         badgeItem = new BadgeItem()
                 .setHideOnSelect(true) //设置被选中时隐藏角标
-                .setBackgroundColor(Color.RED)
+                .setBackgroundColor(R.color.colorAccent)
                 .setText("99");
         /**
          * 设置模式
@@ -147,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         //设置导航条背景颜色
         //在BACKGROUND_STYLE_STATIC下，表示整个容器的背景色。
         // 而在BACKGROUND_STYLE_RIPPLE下，表示选中Item的图标和文本颜色。默认 Color.WHITE
-        bottomNavigationBar.setBarBackgroundColor(R.color.black);
+        bottomNavigationBar.setBarBackgroundColor(R.color.bottomNavigation);
         //选中时的颜色,在BACKGROUND_STYLE_STATIC下，表示选中Item的图标和文本颜色。
         // 而在BACKGROUND_STYLE_RIPPLE下，表示整个容器的背景色。默认Theme's Primary Color
         //bottomNavigationBar.setActiveColor(R.color.black);
@@ -155,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         //bottomNavigationBar.setInActiveColor("#FFFFFF");
 
 
-        bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_white_24dp, "主页").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.drawable.ic_tv_white_24dp, "缴费").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.drawable.ic_favorite_white_24dp, "求助").setActiveColorResource(R.color.white).setBadgeItem(badgeItem))
-                .addItem(new BottomNavigationItem(R.drawable.ic_launch_white_24dp, "更多").setActiveColorResource(R.color.white))
+        bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_grey600_24dp, "主页").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.drawable.ic_payment_grey600_24dp, "缴费").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.drawable.ic_help_grey600_24dp, "求助").setActiveColorResource(R.color.colorPrimary).setBadgeItem(badgeItem))
+                .addItem(new BottomNavigationItem(R.drawable.ic_open_in_new_black_24dp, "更多").setActiveColorResource(R.color.colorPrimary))
                 .setFirstSelectedPosition(0)
                 .initialise(); //所有的设置需在调用该方法前完成
 
@@ -200,6 +224,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 }
                 ft.commitAllowingStateLoss();
             }
+            switch (position){
+                case 0:
+                    getSupportActionBar().setTitle("主页");
+                    break;
+                case 1:
+                    getSupportActionBar().setTitle("缴费");
+                    break;
+                case 2:
+                    getSupportActionBar().setTitle("求助");
+                    break;
+                case 3:
+                    getSupportActionBar().setTitle("更多");
+                    break;
+            }
         }else {
             initFragments();
         }
@@ -223,5 +261,50 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabReselected(int position) {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * 显示 OverFlow 中的图标
+     */
+//    @Override
+//    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+//        if (menu != null) {
+//            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+//                try {
+//                    Method m = menu.getClass().getDeclaredMethod(
+//                            "setOptionalIconsVisible", Boolean.TYPE);
+//                    m.setAccessible(true);
+//                    m.invoke(menu, true);
+//                } catch (Exception e) {
+//                }
+//            }
+//        }
+//        return super.onPrepareOptionsPanel(view, menu);
+//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Toast.makeText(MainActivity.this, "点击了菜单项" + item.getTitle(), Toast.LENGTH_SHORT).show();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_message:
+                Intent intent = new Intent(MainActivity.this, NoticeListActivity.class);
+                intent.putExtra("id",0);
+                startActivityForResult(intent,0);
+                break;
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return false;
     }
 }

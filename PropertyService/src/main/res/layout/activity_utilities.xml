@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.antonioleiva.mvpexample.app.payment.utilities.UtilitiesActivity">
 
+    <ListView
+        android:id="@+id/utilities_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"/>
 </android.support.constraint.ConstraintLayout>

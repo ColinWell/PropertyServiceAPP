@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.antonioleiva.mvpexample.app.payment.parking.ParkingActivity">
 
+    <ListView
+        android:id="@+id/parking_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"/>
 </android.support.constraint.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.antonioleiva.mvpexample.app.Utils;
+package com.antonioleiva.mvpexample.app.util;
 
 import android.view.View;
 

@@ -16,7 +16,9 @@
  *
  */
 
-package com.antonioleiva.mvpexample.app.Login;
+package com.antonioleiva.mvpexample.app.login;
+
+import android.content.SharedPreferences;
 
 public interface LoginInteractor {
 
@@ -28,8 +30,11 @@ public interface LoginInteractor {
         void onUsernameOrPasswordError();
 
         void onSuccess();
+
     }
 
     void login(String username, String password, OnLoginFinishedListener listener);
+
+    void getUserInfo();
 
 }

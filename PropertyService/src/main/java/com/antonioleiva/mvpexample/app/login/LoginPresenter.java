@@ -16,10 +16,24 @@
  *
  */
 
-package com.antonioleiva.mvpexample.app.Login;
+package com.antonioleiva.mvpexample.app.login;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public interface LoginPresenter {
+
+    void saveLoginState(SharedPreferences config,String userName,String password);
+
+    void validateLoginState(SharedPreferences config);
+
     void validateCredentials(String username, String password);
 
+    void showRegisterPage(Context context);
+
+    void getUserInfo();
+
     void onDestroy();
+
+    void showForgotPage(Context context);
 }

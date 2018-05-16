@@ -16,7 +16,16 @@
  *
  */
 
-package com.antonioleiva.mvpexample.app.Login;
+package com.antonioleiva.mvpexample.app.login;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import java.util.HashMap;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
+import cn.smssdk.gui.RegisterPage;
 
 public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLoginFinishedListener {
 
@@ -28,6 +37,31 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         this.loginInteractor = loginInteractor;
     }
 
+    @Override
+    public void saveLoginState(SharedPreferences config, String userName, String password) {
+        SharedPreferences.Editor editor = config.edit();
+        editor.putString("userName",userName);
+        editor.putString("password",password);
+        editor.apply();
+    }
+
+    @Override
+    public void validateLoginState(SharedPreferences config) {
+        if(loginView!=null){
+            loginView.showProgress();
+        }
+        String userName = config.getString("userName",null);
+        String password = config.getString("password",null);
+        if(userName != null && password !=null){
+            loginView.setUserName(userName);
+            loginView.setPassword(password);
+            loginInteractor.login(userName,password,this);
+        }
+        else{
+            loginView.hideProgress();
+        }
+    }
+
     @Override public void validateCredentials(String username, String password) {
         if (loginView != null) {
             loginView.showProgress();
@@ -36,8 +70,40 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         loginInteractor.login(username, password, this);
     }
 
+    @Override
+    public void showRegisterPage(Context context) {
+        // 打开注册页面
+        RegisterPage registerPage = new RegisterPage();
+        // 使用自定义短信模板(不设置则使用默认模板)
+        registerPage.setTempCode("1319972");
+        registerPage.setRegisterCallback(new EventHandler() {
+            public void afterEvent(int event, int result, Object data) {
+                // 解析注册结果
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    @SuppressWarnings("unchecked")
+                    HashMap<String,Object> phoneMap = (HashMap<String, Object>) data;
+                    String country = (String) phoneMap.get("country");
+                    String phone = (String) phoneMap.get("phone");
+                    // 提交用户信息
+//						registerUser(country, phone);
+                }
+            }
+        });
+        registerPage.show(context);
+    }
+
+    @Override
+    public void getUserInfo() {
+        loginInteractor.getUserInfo();
+    }
+
     @Override public void onDestroy() {
         loginView = null;
+    }
+
+    @Override
+    public void showForgotPage(Context context) {
+
     }
 
     @Override public void onUsernameError() {
@@ -62,7 +128,10 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         }
     }
 
-    @Override public void onSuccess() {
+    @Override
+    public void onSuccess() {
+
+        getUserInfo();
         if (loginView != null) {
             loginView.navigateToHome();
         }

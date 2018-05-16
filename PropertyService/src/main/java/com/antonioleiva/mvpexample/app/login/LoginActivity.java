@@ -16,25 +16,28 @@
  *
  */
 
-package com.antonioleiva.mvpexample.app.Login;
+package com.antonioleiva.mvpexample.app.login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.antonioleiva.mvpexample.app.Main.MainActivity;
+import com.antonioleiva.mvpexample.app.main.MainActivity;
 import com.antonioleiva.mvpexample.app.R;
 
 
-public class LoginActivity extends Activity implements LoginView, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements LoginView, View.OnClickListener {
 
     private ProgressBar progressBar;
     private EditText username;
     private EditText password;
     private LoginPresenter presenter;
+    private SharedPreferences config;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +46,19 @@ public class LoginActivity extends Activity implements LoginView, View.OnClickLi
         progressBar = (ProgressBar) findViewById(R.id.progress);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
-        findViewById(R.id.button).setOnClickListener(this);
+
+        findViewById(R.id.login_button).setOnClickListener(this);
+        findViewById(R.id.forgot).setOnClickListener(this);
+        findViewById(R.id.sign_in).setOnClickListener(this);
 
         presenter = new LoginPresenterImpl(this,new LoginInteractorImpl());
+
+        if(config == null){
+            config = getSharedPreferences("config",MODE_PRIVATE);
+        }
+        presenter.validateLoginState(config);
+
+
     }
 
     @Override protected void onDestroy() {
@@ -59,6 +72,16 @@ public class LoginActivity extends Activity implements LoginView, View.OnClickLi
 
     @Override public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setUserName(String userName) {
+        username.setText(userName);
+    }
+
+    @Override
+    public void setPassword(String pass) {
+        password.setText(pass);
     }
 
     @Override public void setUsernameError() {
@@ -75,11 +98,37 @@ public class LoginActivity extends Activity implements LoginView, View.OnClickLi
     }
 
     @Override public void navigateToHome() {
+        if(config == null){
+            config = getSharedPreferences("config",MODE_PRIVATE);
+        }
+        presenter.saveLoginState(config,username.getText().toString(),password.getText().toString());
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
+    @Override
+    public void navigateToForgotPassword() {
+
+    }
+
+    @Override
+    public void navigateToSign() {
+        startActivityForResult(new Intent(this, RegisterActivity.class),1);
+    }
+
     @Override public void onClick(View v) {
-        presenter.validateCredentials(username.getText().toString(), password.getText().toString());
+        switch (v.getId()){
+            case R.id.login_button:
+                presenter.validateCredentials(username.getText().toString(), password.getText().toString());
+                break;
+            case R.id.forgot:
+                presenter.showForgotPage(this);
+                break;
+            case R.id.sign_in:
+//                presenter.showRegisterPage(this);
+                navigateToSign();
+                break;
+        }
+
     }
 }

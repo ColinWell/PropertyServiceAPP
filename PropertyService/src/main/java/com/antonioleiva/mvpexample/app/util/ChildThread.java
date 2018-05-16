@@ -1,11 +1,8 @@
-package com.antonioleiva.mvpexample.app.Utils;
+package com.antonioleiva.mvpexample.app.util;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

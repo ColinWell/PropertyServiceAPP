@@ -1,14 +1,35 @@
 buildscript {
     repositories {
         mavenCentral()
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
     }
 }
+buildscript {
+    // 添加MobSDK的maven地址
+    repositories {
+        maven {
+            url "http://mvn.mob.com/android"
+        }
+    }
 
+    dependencies {
+        // 注册MobSDK
+        classpath "com.mob.sdk:MobSDK:+"
+    }
+}
 allprojects {
     repositories {
         mavenCentral()
+        google()
     }
 }
+
+//android {
+//    compileSdkVersion 23
+//    buildToolsVersion '26.0.2'
+//}
+//dependencies {
+//}
