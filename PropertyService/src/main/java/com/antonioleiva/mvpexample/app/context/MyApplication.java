@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * storage user's info
  * Created by Colin on 2018/3/21.
  */
 
